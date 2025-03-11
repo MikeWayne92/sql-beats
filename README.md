@@ -2,7 +2,7 @@
 
 SQL Beats is an educational web-based game where players become music industry managers using SQL to solve real-world problems. From organizing concert tours to analyzing album sales, players write SQL queries to progress through levels, unlocking music tracks and artist-themed rewards.
 
-![SQL Beats Game](https://raw.githubusercontent.com/yourusername/sql-beats/main/screenshot.png)
+![SQL Beats Game](https://raw.githubusercontent.com/MikeWayne92/sql-beats/main/screenshot.png)
 
 ## Features
 
@@ -37,7 +37,7 @@ SQL Beats is an educational web-based game where players become music industry m
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/sql-beats.git
+git clone https://github.com/MikeWayne92/sql-beats.git
 cd sql-beats
 ```
 
@@ -73,16 +73,30 @@ SQL Beats features a music industry database with the following tables:
 - **Concerts**: Performance events (id, artist_id, venue_id, concert_date, ticket_price, tickets_sold)
 - **Sales**: Album sales data (id, album_id, week_starting, units_sold, revenue, country)
 
-## Technologies Used
+## Technologies & Tools Used
 
-- **Frontend**: HTML5, CSS3, JavaScript
-- **Backend**: Node.js, Express
-- **Database**: SQLite
-- **Libraries**: 
-  - CodeMirror (SQL editor with syntax highlighting)
-  - Web Audio API (for sound effects)
-  - Font Awesome (for icons)
-  - Google Fonts (for typography)
+### Core Technologies
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Backend**: Node.js, Express.js
+- **Database**: SQLite3
+
+### Libraries & Dependencies
+- **CodeMirror**: SQL editor with syntax highlighting and auto-completion
+- **Web Audio API**: For sound effects and audio rewards
+- **Font Awesome**: Icon library for UI elements
+- **Google Fonts**: Typography with 'Press Start 2P' for retro gaming feel
+- **CORS**: Cross-origin resource sharing middleware
+
+### Development Tools
+- **npm**: Package management
+- **nodemon**: Development server with hot reloading
+- **Git**: Version control
+- **GitHub**: Repository hosting and collaboration
+
+### Architecture & Patterns
+- **RESTful API**: For executing queries and retrieving data
+- **MVC Pattern**: Separation of concerns between data, logic, and presentation
+- **Responsive Design**: CSS Grid and Flexbox for multi-device support
 
 ## Development
 
