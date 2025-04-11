@@ -119,6 +119,66 @@ const levels = [
     tableHints: ["Artists", "Albums", "Sales"],
     difficulty: "Hard",
     conceptsIntroduced: ["LIMIT clause", "Complex queries", "Data analysis"]
+  },
+  {
+    id: 11,
+    title: "Genre Popularity",
+    description: "The marketing team wants to know which genres are most popular in different countries.",
+    task: "Find the total sales for each genre in each country, showing genre, country, and total units sold, ordered by total sales descending.",
+    hint: "You'll need to JOIN Artists, Albums, and Sales tables, then use GROUP BY with multiple columns.",
+    solution: "SELECT Artists.genre, Sales.country, SUM(Sales.units_sold) AS total_sales FROM Artists JOIN Albums ON Artists.id = Albums.artist_id JOIN Sales ON Albums.id = Sales.album_id GROUP BY Artists.genre, Sales.country ORDER BY total_sales DESC;",
+    reward: "genre-mix.mp3",
+    tableHints: ["Artists", "Albums", "Sales"],
+    difficulty: "Hard",
+    conceptsIntroduced: ["Multi-column GROUP BY", "Complex aggregations"]
+  },
+  {
+    id: 12,
+    title: "Concert Season",
+    description: "We need to analyze our concert performance across different seasons.",
+    task: "Find the average ticket price and total revenue for concerts in each season (Spring, Summer, Fall, Winter), based on the concert date.",
+    hint: "Use CASE statements to categorize dates into seasons and calculate averages.",
+    solution: "SELECT CASE WHEN strftime('%m', concert_date) IN ('03', '04', '05') THEN 'Spring' WHEN strftime('%m', concert_date) IN ('06', '07', '08') THEN 'Summer' WHEN strftime('%m', concert_date) IN ('09', '10', '11') THEN 'Fall' ELSE 'Winter' END AS season, AVG(ticket_price) AS avg_ticket_price, SUM(ticket_price * tickets_sold) AS total_revenue FROM Concerts GROUP BY season ORDER BY total_revenue DESC;",
+    reward: "seasonal-mix.mp3",
+    tableHints: ["Concerts"],
+    difficulty: "Hard",
+    conceptsIntroduced: ["CASE statements", "Date functions", "Advanced aggregations"]
+  },
+  {
+    id: 13,
+    title: "Album Evolution",
+    description: "Let's analyze how our artists' album sales have evolved over time.",
+    task: "For each artist, find their first and most recent album release years, and the total sales difference between their first and most recent albums.",
+    hint: "Use subqueries to find first and recent albums, then calculate the difference in sales.",
+    solution: "SELECT a.name, MIN(al.release_year) AS first_album_year, MAX(al.release_year) AS recent_album_year, (SELECT SUM(s.units_sold) FROM Sales s JOIN Albums al2 ON s.album_id = al2.id WHERE al2.artist_id = a.id AND al2.release_year = MAX(al.release_year)) - (SELECT SUM(s.units_sold) FROM Sales s JOIN Albums al2 ON s.album_id = al2.id WHERE al2.artist_id = a.id AND al2.release_year = MIN(al.release_year)) AS sales_difference FROM Artists a JOIN Albums al ON a.id = al.artist_id GROUP BY a.id, a.name;",
+    reward: "evolution-mix.mp3",
+    tableHints: ["Artists", "Albums", "Sales"],
+    difficulty: "Expert",
+    conceptsIntroduced: ["Subqueries", "Complex calculations", "Temporal analysis"]
+  },
+  {
+    id: 14,
+    title: "Venue Performance",
+    description: "We need to analyze which venues consistently perform well.",
+    task: "Find venues that have hosted more than 5 concerts with an average attendance rate (tickets_sold/capacity) above 80%.",
+    hint: "Use HAVING clause to filter aggregated results.",
+    solution: "SELECT v.name, COUNT(*) AS total_concerts, AVG(c.tickets_sold * 100.0 / v.capacity) AS avg_attendance_rate FROM Venues v JOIN Concerts c ON v.id = c.venue_id GROUP BY v.id, v.name HAVING COUNT(*) > 5 AND AVG(c.tickets_sold * 100.0 / v.capacity) > 80 ORDER BY avg_attendance_rate DESC;",
+    reward: "venue-mix.mp3",
+    tableHints: ["Venues", "Concerts"],
+    difficulty: "Expert",
+    conceptsIntroduced: ["HAVING clause", "Percentage calculations", "Advanced filtering"]
+  },
+  {
+    id: 15,
+    title: "Artist Growth",
+    description: "Let's analyze which artists have shown the most consistent growth in sales.",
+    task: "Find artists whose album sales have increased every year, showing their name and the number of consecutive years of growth.",
+    hint: "Use window functions to analyze year-over-year growth.",
+    solution: "WITH yearly_sales AS (SELECT a.name, al.release_year, SUM(s.units_sold) AS total_sales FROM Artists a JOIN Albums al ON a.id = al.artist_id JOIN Sales s ON al.id = s.album_id GROUP BY a.id, a.name, al.release_year), growth_check AS (SELECT name, release_year, total_sales, LAG(total_sales) OVER (PARTITION BY name ORDER BY release_year) AS prev_year_sales FROM yearly_sales) SELECT name, COUNT(*) AS years_of_growth FROM growth_check WHERE total_sales > prev_year_sales OR prev_year_sales IS NULL GROUP BY name HAVING COUNT(*) = (SELECT COUNT(DISTINCT release_year) FROM yearly_sales y2 WHERE y2.name = growth_check.name);",
+    reward: "growth-mix.mp3",
+    tableHints: ["Artists", "Albums", "Sales"],
+    difficulty: "Expert",
+    conceptsIntroduced: ["Window functions", "Common Table Expressions (CTEs)", "Advanced analytics"]
   }
 ];
 
